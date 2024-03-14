@@ -1,2 +1,4 @@
-package com.javaweb.springbootnonjwt.repository.impl;public class BuildingRepositoryImpl {
+package com.javaweb.springbootnonjwt.repository.impl;
+
+public class BuildingRepositoryImpl {
 }

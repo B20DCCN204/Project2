@@ -1,2 +1,8 @@
-package com.javaweb.springbootnonjwt.controller;public class BuildingController {
+package com.javaweb.springbootnonjwt.api;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class BuildingApi {
+
 }

@@ -1,2 +1,4 @@
-package com.javaweb.springbootnonjwt.service.impl;public interface BuildingService {
+package com.javaweb.springbootnonjwt.service;
+
+public interface BuildingService {
 }
