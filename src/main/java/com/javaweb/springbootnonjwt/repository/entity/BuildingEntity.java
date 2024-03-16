@@ -4,8 +4,9 @@ import java.util.List;
 
 public class BuildingEntity {
     private long id;
-    private String name, street, ward, direction, level, managerName, managerPhoneNumber;
-    private int numberOfBasement, rentPrice;
+    private String name, street, ward, direction, level, managerName, managerPhoneNumber, serviceFee;
+    private int numberOfBasement, rentPrice, floorArea;
+    private double brokerageFee;
     private List<RentAreaEntity> rentAreas;
 
     public BuildingEntity() {
@@ -97,5 +98,29 @@ public class BuildingEntity {
 
     public void setRentAreas(List<RentAreaEntity> rentAreas) {
         this.rentAreas = rentAreas;
+    }
+
+    public String getServiceFee() {
+        return serviceFee;
+    }
+
+    public void setServiceFee(String serviceFee) {
+        this.serviceFee = serviceFee;
+    }
+
+    public int getFloorArea() {
+        return floorArea;
+    }
+
+    public void setFloorArea(int floorArea) {
+        this.floorArea = floorArea;
+    }
+
+    public double getBrokerageFee() {
+        return brokerageFee;
+    }
+
+    public void setBrokerageFee(double brokerageFee) {
+        this.brokerageFee = brokerageFee;
     }
 }
