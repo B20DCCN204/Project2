@@ -19,28 +19,90 @@ public class BuildingRepositoryImpl implements BuildingRepository {
     static final String USER = "root";
     static final String PASS = "giang412345";
     @Override
-    public List<BuildingEntity> findAll(Map<String, Object> params) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM building b WHERE 1 = 1 ");
-
-        for(Map.Entry<String, Object> entry : params.entrySet()){
-            String key = entry.getKey();
-            Object value = entry.getValue();
-        }
+    public List<BuildingEntity> findAll(Map<String, Object> params, List<String> typeCodes) {
+        StringBuilder finalSql = new StringBuilder("SELECT b.id, b.name, b.districtid, b.ward, b.street, b.numberofbasement," +
+                " b.managername, b.managerphonenumber, b.floorarea, b.rentprice, b.servicefee, b.brokeragefee FROM building b ");
+        StringBuilder whereSql = new StringBuilder();
+        StringBuilder joinSql = new StringBuilder();
+        whereSql.append("WHERE 1 = 1 ");
+        finalSql.append(querySqlJoin(params, typeCodes, joinSql));
+        finalSql.append(querySqlWhere(params, typeCodes, whereSql));
+        finalSql.append("GROUP BY b.id");
         List<BuildingEntity> result = new ArrayList<>();
         try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery(sql.toString());
+            ResultSet rs = statement.executeQuery(finalSql.toString());
         ){
             while (rs.next()){
                 BuildingEntity building = new BuildingEntity();
+                building.setId(rs.getLong("id"));
                 building.setName(rs.getString("name"));
+                building.setDistrictId(rs.getLong("districtid"));
                 building.setStreet(rs.getString("street"));
                 building.setWard(rs.getString("ward"));
+                building.setNumberOfBasement(rs.getInt("numberofbasement"));
+                building.setManagerName(rs.getString("managername"));
+                building.setManagerPhoneNumber(rs.getString("managerphonenumber"));
+                building.setFloorArea(rs.getInt("floorarea"));
+                building.setRentPrice(rs.getInt("rentprice"));
+                building.setServiceFee(rs.getString("servicefee"));
+                building.setBrokerageFee(rs.getDouble("brokeragefee"));
                 result.add(building);
             }
         }catch(Exception e){
             e.printStackTrace();
         }
         return result;
+    }
+
+    private String querySqlJoin(Map<String, Object> params, List<String> typeCodes, StringBuilder sb){
+        for(Map.Entry<String, Object> entry : params.entrySet()){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(value != null && !value.toString().isEmpty()){
+                if(key.equalsIgnoreCase("districtId")){
+                    sb.append("INNER JOIN district d ON d.id = b.districtid ");
+                }
+                if(key.equalsIgnoreCase("staffId")){
+                    sb.append("INNER JOIN assignmentbuilding a ON a.buildingid = b.id ");
+                }
+                if(key.equalsIgnoreCase("areaFrom") || key.equalsIgnoreCase("areaTo")){
+                    sb.append("INNER JOIN rentarea r ON r.buildingid = b.id ");
+                }
+            }
+        }
+        if(typeCodes != null){
+            sb.append("INNER JOIN buildingrenttype brt on brt.buildingid = b.id " +
+                    "INNER JOIN renttype rt on rt.id = brt.renttypeid ");
+        }
+        return sb.toString();
+    }
+    private String querySqlWhere(Map<String, Object> params, List<String> typeCodes, StringBuilder sb){
+        for(Map.Entry<String, Object> entry : params.entrySet()){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(value != null && !value.toString().isEmpty()){
+                if(key.equalsIgnoreCase("name")) sb.append("AND b.name = '" + value + "' ");
+                if(key.equalsIgnoreCase("districtId")) sb.append("AND b.districtid = " + value + " ");
+                if(key.equalsIgnoreCase("street")) sb.append("AND b.street = '" + value + "' ");
+                if(key.equalsIgnoreCase("ward")) sb.append("AND b.ward = '" + value + "' ");
+                if(key.equalsIgnoreCase("numberOfBasement")) sb.append("AND b.numberofbasement = " + value + " ");
+                if(key.equalsIgnoreCase("direction")) sb.append("AND b.direction = '" + value + "' ");
+                if(key.equalsIgnoreCase("level")) sb.append("AND b.level = '" + value + "' ");
+                if(key.equalsIgnoreCase("areaFrom")) sb.append("AND r.value >= " + value + " ");
+                if(key.equalsIgnoreCase("areaTo")) sb.append("AND r.value <= " + value + " ");
+                if(key.equalsIgnoreCase("rentPriceFrom")) sb.append("AND b.rentprice >= " + value + " ");
+                if(key.equalsIgnoreCase("rentPriceTo")) sb.append("AND b.rentprice <= " + value + " ");
+                if(key.equalsIgnoreCase("managerName")) sb.append("AND b.managername = '" + value + "' ");
+                if(key.equalsIgnoreCase("managerPhoneNumber")) sb.append("AND b.managerphonenumber = '" + value + "' ");
+                if(key.equalsIgnoreCase("staffId")) sb.append("AND a.staffid = " + value + " ");
+            }
+        }
+        if(typeCodes != null){
+            for(String typeCode : typeCodes){
+                sb.append("AND rt.code = '" + typeCode + "' ");
+            }
+        }
+        return sb.toString();
     }
 }

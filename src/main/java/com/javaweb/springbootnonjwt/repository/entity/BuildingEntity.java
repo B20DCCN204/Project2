@@ -3,7 +3,7 @@ package com.javaweb.springbootnonjwt.repository.entity;
 import java.util.List;
 
 public class BuildingEntity {
-    private long id;
+    private long id, districtId;
     private String name, street, ward, direction, level, managerName, managerPhoneNumber, serviceFee;
     private int numberOfBasement, rentPrice, floorArea;
     private double brokerageFee;
@@ -18,6 +18,14 @@ public class BuildingEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(long districtId) {
+        this.districtId = districtId;
     }
 
     public String getName() {

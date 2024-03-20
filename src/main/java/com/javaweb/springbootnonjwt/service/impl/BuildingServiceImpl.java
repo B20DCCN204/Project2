@@ -17,9 +17,9 @@ public class BuildingServiceImpl implements BuildingService {
     @Autowired
     private BuildingRepository buildingRepository;
     @Override
-    public List<BuildingDTO> getBuildings(Map<String, Object> params) {
+    public List<BuildingDTO> fillAll(Map<String, Object> params, List<String> typeCodes) {
         List<BuildingDTO> result = new ArrayList<>();
-        List<BuildingEntity> input = buildingRepository.findAll(params);
+        List<BuildingEntity> input = buildingRepository.findAll(params, typeCodes);
         for(BuildingEntity building : input){
             BuildingDTO buildingDTO = new BuildingDTO();
             buildingDTO.setName(building.getName());

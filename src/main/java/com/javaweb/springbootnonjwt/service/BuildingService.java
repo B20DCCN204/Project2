@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface BuildingService {
-    List<BuildingDTO> getBuildings(Map<String, Object> params);
+    List<BuildingDTO> fillAll(Map<String, Object> params, List<String> typeCodes);
 }
