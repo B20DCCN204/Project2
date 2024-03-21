@@ -82,19 +82,19 @@ public class BuildingRepositoryImpl implements BuildingRepository {
             String key = entry.getKey();
             Object value = entry.getValue();
             if(value != null && !value.toString().isEmpty()){
-                if(key.equalsIgnoreCase("name")) sb.append("AND b.name = '" + value + "' ");
+                if(key.equalsIgnoreCase("name")) sb.append("AND b.name LIKE '%" + value + "%' ");
                 if(key.equalsIgnoreCase("districtId")) sb.append("AND b.districtid = " + value + " ");
-                if(key.equalsIgnoreCase("street")) sb.append("AND b.street = '" + value + "' ");
-                if(key.equalsIgnoreCase("ward")) sb.append("AND b.ward = '" + value + "' ");
+                if(key.equalsIgnoreCase("street")) sb.append("AND b.street LIKE '%" + value + "%' ");
+                if(key.equalsIgnoreCase("ward")) sb.append("AND b.ward LIKE '%" + value + "%' ");
                 if(key.equalsIgnoreCase("numberOfBasement")) sb.append("AND b.numberofbasement = " + value + " ");
-                if(key.equalsIgnoreCase("direction")) sb.append("AND b.direction = '" + value + "' ");
-                if(key.equalsIgnoreCase("level")) sb.append("AND b.level = '" + value + "' ");
+                if(key.equalsIgnoreCase("direction")) sb.append("AND b.direction LIKE '%" + value + "%' ");
+                if(key.equalsIgnoreCase("level")) sb.append("AND b.level LIKE '%" + value + "%' ");
                 if(key.equalsIgnoreCase("areaFrom")) sb.append("AND r.value >= " + value + " ");
                 if(key.equalsIgnoreCase("areaTo")) sb.append("AND r.value <= " + value + " ");
                 if(key.equalsIgnoreCase("rentPriceFrom")) sb.append("AND b.rentprice >= " + value + " ");
                 if(key.equalsIgnoreCase("rentPriceTo")) sb.append("AND b.rentprice <= " + value + " ");
-                if(key.equalsIgnoreCase("managerName")) sb.append("AND b.managername = '" + value + "' ");
-                if(key.equalsIgnoreCase("managerPhoneNumber")) sb.append("AND b.managerphonenumber = '" + value + "' ");
+                if(key.equalsIgnoreCase("managerName")) sb.append("AND b.managername LIKE '%" + value + "%' ");
+                if(key.equalsIgnoreCase("managerPhoneNumber")) sb.append("AND b.managerphonenumber LIKE '%" + value + "%' ");
                 if(key.equalsIgnoreCase("staffId")) sb.append("AND a.staffid = " + value + " ");
             }
         }

@@ -1,7 +1,7 @@
 package com.javaweb.springbootnonjwt.model;
 
 public class BuildingDTO {
-    private String name, address ,direction, level, managerName, managerPhoneNumber, serviceFee;
+    private String name, address ,managerName, managerPhoneNumber, serviceFee, rentArea;
     private double brokerageFee;
     private int numberOfBasement, rentPrice, floorArea, emptyArea;
 
@@ -22,22 +22,6 @@ public class BuildingDTO {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
     }
 
     public String getManagerName() {
@@ -102,5 +86,17 @@ public class BuildingDTO {
 
     public void setEmptyArea(int emptyArea) {
         this.emptyArea = emptyArea;
+    }
+
+    public String getRentArea() {
+        return rentArea;
+    }
+
+    public void setRentArea(String rentArea) {
+        this.rentArea = rentArea;
+    }
+
+    public void setBrokerageFee(double brokerageFee) {
+        this.brokerageFee = brokerageFee;
     }
 }

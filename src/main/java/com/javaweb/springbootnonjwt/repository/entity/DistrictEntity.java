@@ -5,7 +5,6 @@ import java.util.List;
 public class DistrictEntity {
     private long id;
     private String code, name;
-    private List<BuildingEntity> buildings;
 
     public DistrictEntity() {
     }
@@ -34,11 +33,4 @@ public class DistrictEntity {
         this.name = name;
     }
 
-    public List<BuildingEntity> getBuildings() {
-        return buildings;
-    }
-
-    public void setBuildings(List<BuildingEntity> buildings) {
-        this.buildings = buildings;
-    }
 }
