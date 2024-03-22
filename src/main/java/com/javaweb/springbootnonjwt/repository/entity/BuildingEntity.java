@@ -7,7 +7,6 @@ public class BuildingEntity {
     private String name, street, ward, direction, level, managerName, managerPhoneNumber, serviceFee;
     private int numberOfBasement, rentPrice, floorArea;
     private double brokerageFee;
-    private List<RentAreaEntity> rentAreas;
 
     public BuildingEntity() {
     }
@@ -100,13 +99,6 @@ public class BuildingEntity {
         this.rentPrice = rentPrice;
     }
 
-    public List<RentAreaEntity> getRentAreas() {
-        return rentAreas;
-    }
-
-    public void setRentAreas(List<RentAreaEntity> rentAreas) {
-        this.rentAreas = rentAreas;
-    }
 
     public String getServiceFee() {
         return serviceFee;

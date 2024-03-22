@@ -56,6 +56,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
     }
 
     private String querySqlJoin(Map<String, Object> params, List<String> typeCodes, StringBuilder sb){
+        boolean joinAdded = false;
         for(Map.Entry<String, Object> entry : params.entrySet()){
             String key = entry.getKey();
             Object value = entry.getValue();
@@ -66,8 +67,9 @@ public class BuildingRepositoryImpl implements BuildingRepository {
                 if(key.equalsIgnoreCase("staffId")){
                     sb.append("INNER JOIN assignmentbuilding a ON a.buildingid = b.id ");
                 }
-                if(key.equalsIgnoreCase("areaFrom") || key.equalsIgnoreCase("areaTo")){
+                if(key.equalsIgnoreCase("areaFrom") || key.equalsIgnoreCase("areaTo") && !joinAdded){
                     sb.append("INNER JOIN rentarea r ON r.buildingid = b.id ");
+                    joinAdded = true;
                 }
             }
         }
