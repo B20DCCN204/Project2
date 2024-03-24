@@ -61,9 +61,6 @@ public class BuildingRepositoryImpl implements BuildingRepository {
             String key = entry.getKey();
             Object value = entry.getValue();
             if(value != null && !value.toString().isEmpty()){
-                if(key.equalsIgnoreCase("districtId")){
-                    sb.append("INNER JOIN district d ON d.id = b.districtid ");
-                }
                 if(key.equalsIgnoreCase("staffId")){
                     sb.append("INNER JOIN assignmentbuilding a ON a.buildingid = b.id ");
                 }
@@ -73,7 +70,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
                 }
             }
         }
-        if(typeCodes != null){
+        if(typeCodes != null && typeCodes.size() != 0){
             sb.append("INNER JOIN buildingrenttype brt on brt.buildingid = b.id " +
                     "INNER JOIN renttype rt on rt.id = brt.renttypeid ");
         }
@@ -100,10 +97,11 @@ public class BuildingRepositoryImpl implements BuildingRepository {
                 if(key.equalsIgnoreCase("staffId")) sb.append("AND a.staffid = " + value + " ");
             }
         }
-        if(typeCodes != null){
-            for(String typeCode : typeCodes){
-                sb.append("AND rt.code = '" + typeCode + "' ");
-            }
+        if(typeCodes != null && typeCodes.size() != 0){
+//            for(String typeCode : typeCodes){
+//                sb.append("AND rt.code = '" + typeCode + "' ");
+//            }
+            sb.append("AND rt.code IN('").append(String.join("', '", typeCodes)).append("') ");
         }
         return sb.toString();
     }

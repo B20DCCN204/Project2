@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
@@ -35,7 +36,7 @@ public class BuildingServiceImpl implements BuildingService {
             buildingDTO.setAddress(building.getStreet()+", "+building.getWard()+", "+districtName);
 
             List<RentAreaEntity> rentAreaEntityList = rentAreaRepository.findByBuildingId(building.getId());
-            String rentAreas = convertRentAreaList(rentAreaEntityList);
+            String rentAreas = rentAreaEntityList.stream().map(ra -> String.valueOf(ra.getValue())).collect(Collectors.joining(", "));
             buildingDTO.setRentArea(rentAreas);
 
             buildingDTO.setNumberOfBasement(building.getNumberOfBasement());
@@ -50,13 +51,13 @@ public class BuildingServiceImpl implements BuildingService {
         return result;
     }
 
-    private String convertRentAreaList(List<RentAreaEntity> rentAreaEntityList){
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < rentAreaEntityList.size(); i++){
-            if(i != rentAreaEntityList.size()-1){
-                sb.append(rentAreaEntityList.get(i).getValue()).append(", ");
-            }else sb.append(rentAreaEntityList.get(i).getValue());
-        }
-        return sb.toString().trim();
-    }
+//    private String convertRentAreaList(List<RentAreaEntity> rentAreaEntityList){
+//        StringBuilder sb = new StringBuilder();
+//        for(int i = 0; i < rentAreaEntityList.size(); i++){
+//            if(i != rentAreaEntityList.size()-1){
+//                sb.append(rentAreaEntityList.get(i).getValue()).append(", ");
+//            }else sb.append(rentAreaEntityList.get(i).getValue());
+//        }
+//        return sb.toString().trim();
+//    }
 }
