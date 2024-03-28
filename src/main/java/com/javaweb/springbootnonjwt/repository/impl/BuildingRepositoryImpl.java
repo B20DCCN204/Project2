@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -112,6 +113,9 @@ public class BuildingRepositoryImpl implements BuildingRepository {
         }
         if(typeCodes != null && typeCodes.size() != 0){
             sb.append("AND rt.code IN('").append(String.join("', '", typeCodes)).append("') ");
+//            sb.append("AND (");
+//            String sql = typeCodes.stream().map(it -> "rt.code like '%" + it + "%' ").collect(Collectors.joining("OR "));
+//            sb.append(sql + ") ");
         }
     }
 }
