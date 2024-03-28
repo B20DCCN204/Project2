@@ -1,6 +1,8 @@
 package com.javaweb.springbootnonjwt.service.impl;
 
+import com.javaweb.springbootnonjwt.builder.BuildingSearchBuilder;
 import com.javaweb.springbootnonjwt.converter.BuildingDTOConverter;
+import com.javaweb.springbootnonjwt.converter.BuildingSearchBuilderConverter;
 import com.javaweb.springbootnonjwt.model.BuildingDTO;
 import com.javaweb.springbootnonjwt.repository.BuildingRepository;
 import com.javaweb.springbootnonjwt.repository.entity.BuildingEntity;
@@ -19,10 +21,13 @@ public class BuildingServiceImpl implements BuildingService {
     private BuildingRepository buildingRepository;
     @Autowired
     private BuildingDTOConverter buildingDTOConverter;
+    @Autowired
+    private BuildingSearchBuilderConverter buildingSearchBuilderConverter;
     @Override
     public List<BuildingDTO> fillAll(Map<String, Object> params, List<String> typeCodes) {
+        BuildingSearchBuilder buildingSearchBuilder = buildingSearchBuilderConverter.toBuildingSearchBuilder(params, typeCodes);
+        List<BuildingEntity> input = buildingRepository.findAll(buildingSearchBuilder);
         List<BuildingDTO> result = new ArrayList<>();
-        List<BuildingEntity> input = buildingRepository.findAll(params, typeCodes);
         for(BuildingEntity building : input){
             BuildingDTO buildingDTO = buildingDTOConverter.toBuildingDTO(building);
             result.add(buildingDTO);
