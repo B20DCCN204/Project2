@@ -1,30 +1,65 @@
 package com.javaweb.springbootnonjwt.repository.entity;
 
+import jakarta.persistence.*;
+
 import java.util.List;
 
+@Entity
+@Table(name = "building")
 public class BuildingEntity {
-    private long id, districtId;
-    private String name, street, ward, direction, level, managerName, managerPhoneNumber, serviceFee;
-    private int numberOfBasement, rentPrice, floorArea;
-    private double brokerageFee;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "name", nullable = false)
+    private String name;
+    @Column(name = "street")
+    private String street;
+    @Column(name = "ward")
+    private String ward;
+    @ManyToOne
+    @JoinColumn(name = "districtid", nullable = false)
+    private DistrictEntity district;
+    @OneToMany(mappedBy = "building")
+    private List<RentAreaEntity> rentAreaEntities;
+    @Column(name = "managername")
+    private String managerName;
+    @Column(name = "managerphonenumber")
+    private String managerPhoneNumber;
+    @Column(name = "servicefee")
+    private String serviceFee;
+    @Column(name = "numberofbasement")
+    private Integer numberOfBasement;
+    @Column(name = "rentprice", nullable = false)
+    private Integer rentPrice;
+    @Column(name = "floorarea")
+    private Integer floorArea;
+    @Column(name = "brokeragefee")
+    private Double brokerageFee;
 
-    public BuildingEntity() {
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getDistrictId() {
-        return districtId;
+    public DistrictEntity getDistrict() {
+        return district;
     }
 
-    public void setDistrictId(long districtId) {
-        this.districtId = districtId;
+    public BuildingEntity setDistrict(DistrictEntity district) {
+        this.district = district;
+        return this;
+    }
+
+    public List<RentAreaEntity> getRentAreaEntities() {
+        return rentAreaEntities;
+    }
+
+    public BuildingEntity setRentAreaEntities(List<RentAreaEntity> rentAreaEntities) {
+        this.rentAreaEntities = rentAreaEntities;
+        return this;
     }
 
     public String getName() {
@@ -51,22 +86,6 @@ public class BuildingEntity {
         this.ward = ward;
     }
 
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
     public String getManagerName() {
         return managerName;
     }
@@ -83,23 +102,6 @@ public class BuildingEntity {
         this.managerPhoneNumber = managerPhoneNumber;
     }
 
-    public int getNumberOfBasement() {
-        return numberOfBasement;
-    }
-
-    public void setNumberOfBasement(int numberOfBasement) {
-        this.numberOfBasement = numberOfBasement;
-    }
-
-    public int getRentPrice() {
-        return rentPrice;
-    }
-
-    public void setRentPrice(int rentPrice) {
-        this.rentPrice = rentPrice;
-    }
-
-
     public String getServiceFee() {
         return serviceFee;
     }
@@ -108,19 +110,39 @@ public class BuildingEntity {
         this.serviceFee = serviceFee;
     }
 
-    public int getFloorArea() {
+    public Integer getNumberOfBasement() {
+        return numberOfBasement;
+    }
+
+    public BuildingEntity setNumberOfBasement(Integer numberOfBasement) {
+        this.numberOfBasement = numberOfBasement;
+        return this;
+    }
+
+    public Integer getRentPrice() {
+        return rentPrice;
+    }
+
+    public BuildingEntity setRentPrice(Integer rentPrice) {
+        this.rentPrice = rentPrice;
+        return this;
+    }
+
+    public Integer getFloorArea() {
         return floorArea;
     }
 
-    public void setFloorArea(int floorArea) {
+    public BuildingEntity setFloorArea(Integer floorArea) {
         this.floorArea = floorArea;
+        return this;
     }
 
-    public double getBrokerageFee() {
+    public Double getBrokerageFee() {
         return brokerageFee;
     }
 
-    public void setBrokerageFee(double brokerageFee) {
+    public BuildingEntity setBrokerageFee(Double brokerageFee) {
         this.brokerageFee = brokerageFee;
+        return this;
     }
 }

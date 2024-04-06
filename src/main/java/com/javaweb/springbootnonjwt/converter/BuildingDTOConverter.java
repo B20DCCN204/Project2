@@ -1,8 +1,6 @@
 package com.javaweb.springbootnonjwt.converter;
 
 import com.javaweb.springbootnonjwt.model.BuildingDTO;
-import com.javaweb.springbootnonjwt.repository.DistrictRepository;
-import com.javaweb.springbootnonjwt.repository.RentAreaRepository;
 import com.javaweb.springbootnonjwt.repository.entity.BuildingEntity;
 import com.javaweb.springbootnonjwt.repository.entity.RentAreaEntity;
 import org.modelmapper.ModelMapper;
@@ -15,18 +13,13 @@ import java.util.stream.Collectors;
 @Component
 public class BuildingDTOConverter {
     @Autowired
-    private DistrictRepository districtRepository;
-    @Autowired
-    private RentAreaRepository rentAreaRepository;
-    @Autowired
     private ModelMapper modelMapper;
     public BuildingDTO toBuildingDTO(BuildingEntity building){
         BuildingDTO buildingDTO = modelMapper.map(building, BuildingDTO.class);
 
-        String districtName = districtRepository.findById(building.getDistrictId()).getName();
-        buildingDTO.setAddress(building.getStreet()+", "+building.getWard()+", "+districtName);
+        buildingDTO.setAddress(building.getStreet()+", "+building.getWard()+", "+building.getDistrict().getName());
 
-        List<RentAreaEntity> rentAreaEntityList = rentAreaRepository.findByBuildingId(building.getId());
+        List<RentAreaEntity> rentAreaEntityList = building.getRentAreaEntities();
         String rentAreas = rentAreaEntityList.stream().map(ra -> String.valueOf(ra.getValue())).collect(Collectors.joining(", "));
         buildingDTO.setRentArea(rentAreas);
 

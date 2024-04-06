@@ -1,10 +1,23 @@
 package com.javaweb.springbootnonjwt.repository.entity;
 
+import jakarta.persistence.*;
+
 import java.util.List;
 
+@Entity
+@Table(name = "district")
 public class DistrictEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String code, name;
+
+    @Column(name = "code", nullable = false, unique = true)
+    private String code;
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @OneToMany(mappedBy = "district")
+    private List<BuildingEntity> buildingEntities;
 
     public DistrictEntity() {
     }
@@ -33,4 +46,12 @@ public class DistrictEntity {
         this.name = name;
     }
 
+    public List<BuildingEntity> getBuildingEntities() {
+        return buildingEntities;
+    }
+
+    public DistrictEntity setBuildingEntities(List<BuildingEntity> buildingEntities) {
+        this.buildingEntities = buildingEntities;
+        return this;
+    }
 }

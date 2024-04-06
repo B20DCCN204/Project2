@@ -3,23 +3,23 @@ package com.javaweb.springbootnonjwt.repository.impl;
 import com.javaweb.springbootnonjwt.builder.BuildingSearchBuilder;
 import com.javaweb.springbootnonjwt.repository.BuildingRepository;
 import com.javaweb.springbootnonjwt.repository.entity.BuildingEntity;
-import com.javaweb.springbootnonjwt.utils.ConnectorJDBCUtil;
 import com.javaweb.springbootnonjwt.utils.ObjectUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 
 @Repository
+@Primary
 public class BuildingRepositoryImpl implements BuildingRepository {
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder) {
         StringBuilder finalSql = new StringBuilder("SELECT b.id, b.name, b.districtid, b.ward, b.street, b.numberofbasement," +
@@ -34,31 +34,9 @@ public class BuildingRepositoryImpl implements BuildingRepository {
         finalSql.append(joinSql);
         finalSql.append(whereSql);
         finalSql.append("GROUP BY b.id");
-        List<BuildingEntity> result = new ArrayList<>();
-        try(Connection conn = ConnectorJDBCUtil.getConnection();
-            Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery(finalSql.toString());
-        ){
-            while (rs.next()){
-                BuildingEntity building = new BuildingEntity();
-                building.setId(rs.getLong("id"));
-                building.setName(rs.getString("name"));
-                building.setDistrictId(rs.getLong("districtid"));
-                building.setStreet(rs.getString("street"));
-                building.setWard(rs.getString("ward"));
-                building.setNumberOfBasement(rs.getInt("numberofbasement"));
-                building.setManagerName(rs.getString("managername"));
-                building.setManagerPhoneNumber(rs.getString("managerphonenumber"));
-                building.setFloorArea(rs.getInt("floorarea"));
-                building.setRentPrice(rs.getInt("rentprice"));
-                building.setServiceFee(rs.getString("servicefee"));
-                building.setBrokerageFee(rs.getDouble("brokeragefee"));
-                result.add(building);
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return result;
+
+        Query query = entityManager.createNativeQuery(finalSql.toString(), BuildingEntity.class);
+        return query.getResultList();
     }
 
     private void querySqlJoin(BuildingSearchBuilder buildingSearchBuilder, StringBuilder sb){
