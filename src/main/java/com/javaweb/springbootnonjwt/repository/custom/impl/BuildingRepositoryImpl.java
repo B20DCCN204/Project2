@@ -1,7 +1,8 @@
-package com.javaweb.springbootnonjwt.repository.impl;
+package com.javaweb.springbootnonjwt.repository.custom.impl;
 
 import com.javaweb.springbootnonjwt.builder.BuildingSearchBuilder;
 import com.javaweb.springbootnonjwt.repository.BuildingRepository;
+import com.javaweb.springbootnonjwt.repository.custom.BuildingRepositoryCustom;
 import com.javaweb.springbootnonjwt.repository.entity.BuildingEntity;
 import com.javaweb.springbootnonjwt.utils.ObjectUtil;
 import jakarta.persistence.EntityManager;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Repository
 @Primary
-public class BuildingRepositoryImpl implements BuildingRepository {
+public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
     @Override
